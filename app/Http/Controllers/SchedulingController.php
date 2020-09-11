@@ -23,7 +23,7 @@ class SchedulingController extends Controller
         ->join('cars', 'schedulings.id_car', '=', 'cars.id')
         ->where('id_user', $id_user)->get();
 
-        return view('schedulings.index',compact('schedulings'));
+        return view('schedulings/index',compact('schedulings'));
 
     }
 
@@ -36,7 +36,7 @@ class SchedulingController extends Controller
     {
         $car = \App\Car::where('id', $id)->get();
 
-        return view('schedulings.create', compact('car'));
+        return view('schedulings/create', compact('car'));
     }
 
     /**
@@ -54,8 +54,12 @@ class SchedulingController extends Controller
             'id_user' => 'required|numeric'
         ]);
         $scheduling = Scheduling::create($validatedData);
-        
-        return redirect('/schedulings')->with('success', 'Agendamento cadastrado com sucesso!!');
+        $id = $request['id_car'];
+        $car = Car::findOrFail($id);
+        $car->status = "Agendado";
+        $car->save();
+
+        return redirect('/schedulings/index')->with('success', 'Agendamento cadastrado com sucesso!!');
     }
 
     /**
@@ -103,6 +107,6 @@ class SchedulingController extends Controller
         $scheduling = Scheduling::findOrFail($id);
         $scheduling->delete();
 
-        return redirect('/schedulings')->with('success', 'Agendamento cancelado com sucesso!!');
+        return redirect('/schedulings/index')->with('success', 'Agendamento cancelado com sucesso!!');
     }
 }

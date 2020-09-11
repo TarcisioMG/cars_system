@@ -76,7 +76,7 @@
         </ul>
       </div><br />
     @endif
-      <form method="post" action="{{ route('cars.store') }}">
+      <form method="get" action="{{ route('cars.store') }}">
           <div class="form-group">
               @csrf
               <label for="name">Fabricante:</label>

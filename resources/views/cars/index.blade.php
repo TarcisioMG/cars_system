@@ -39,21 +39,26 @@
             <td>{{$car->modelo}}</td>
             <td>{{$car->ano}}</td>
             <td>{{$car->status}}</td>
-            @if(isset(Auth::user()->tipo_usuario))
-              @if (Auth::user()->tipo_usuario != "comum")
-              <td><a href="{{ route('cars.edit',$car->id) }}" class="btn btn-primary">Editar</a></td>
-              <td>
-                <form action="{{ route('cars.destroy', $car->id)}}" method="post">
-                  @csrf
-                  @method('GET')
-                  <button class="btn btn-danger" type="submit">Excluir</button>
-                </form>
-              </td>
+            @if($car->status=="Disponivel")
+              @if(isset(Auth::user()->tipo_usuario))
+                @if (Auth::user()->tipo_usuario != "comum")
+                <td><a href="{{ route('cars.edit',$car->id) }}" class="btn btn-primary">Editar</a></td>
+                <td>
+                  <form action="{{ route('cars.destroy', $car->id)}}" method="post">
+                    @csrf
+                    @method('GET')
+                    <button class="btn btn-danger" type="submit">Excluir</button>
+                  </form>
+                </td>
+                @else
+                <td><a href="{{ route('schedulings.create', $car->id) }}" class="btn btn-success">Quero esse!</a></td>
+                @endif
               @else
               <td><a href="{{ route('schedulings.create', $car->id) }}" class="btn btn-success">Quero esse!</a></td>
               @endif
             @else
-            <td><a href="{{ route('schedulings.create', $car->id) }}" class="btn btn-primary">Quero esse!</a></td>
+            <td>Carro Reservado</td>
+            <td></td>
             @endif
         </tr>
         @endforeach

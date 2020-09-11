@@ -16,7 +16,7 @@ class CarController extends Controller
     {
         $cars = Car::all();
 
-        return view('cars.index', compact('cars'));
+        return view('cars/index', compact('cars'));
     }
 
     /**
@@ -26,7 +26,7 @@ class CarController extends Controller
      */
     public function create()
     {
-        return view('cars.create');
+        return view('cars/create');
     }
 
     /**
@@ -37,6 +37,7 @@ class CarController extends Controller
      */
     public function store(Request $request)
     {
+
         $validatedData = $request->validate([
             'fabricante'=>'required',
             'modelo'=> 'required',
@@ -48,7 +49,7 @@ class CarController extends Controller
         ]);
         $car = Car::create($validatedData);
         
-        return redirect('/cars')->with('success', 'Carro cadastrado com sucesso!!');
+        return redirect('cars/index')->with('success', 'Carro cadastrado com sucesso!!');
     }
 
     /**
@@ -99,7 +100,7 @@ class CarController extends Controller
         $car->foto = $request->get('foto');
         $car->save();
 
-        return redirect('/cars')->with('success', 'Dados atualizados com sucesso!!');
+        return redirect('cars/index')->with('success', 'Dados atualizados com sucesso!!');
     }
 
     /**
@@ -113,6 +114,6 @@ class CarController extends Controller
         $car = Car::findOrFail($id);
         $car->delete();
 
-        return redirect('/cars')->with('success', 'Carro excluído com sucesso!!');
+        return redirect('/cars/index')->with('success', 'Carro excluído com sucesso!!');
     }
 }
